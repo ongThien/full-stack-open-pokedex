@@ -1,8 +1,5 @@
 name: Testing stuff
 
-env:
-
-
 on:
   push:
     branches:

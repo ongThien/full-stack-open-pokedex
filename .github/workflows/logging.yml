@@ -28,7 +28,6 @@ jobs:
       - name: does contain 'skip'
         env:
           TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(toJson(github.event.commits), '#skip') == 'false' }}
-
           CONDITION: ${{ contains(toJson(github.event.commits), '#skip') == 'false' }}
         run:
           echo "$TAG_RELEASE_CONDITION" "$CONDITION"

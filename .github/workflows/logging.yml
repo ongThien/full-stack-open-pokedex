@@ -13,21 +13,13 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
-      - name: github context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
       - name: commits
         env:
           COMMITS: ${{ toJson(github.event.commits) }}
         run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
       - name: does contain 'skip'
         env:
           TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
           CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
         run:
-          echo "$TAG_RELEASE_CONDITION" "$CONDITION"
+          echo "$TAG_RELEASE_CONDITION" "$CONDITION" "$COMMIT_MESSAGES"

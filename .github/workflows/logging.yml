@@ -23,7 +23,7 @@ jobs:
           CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#skip') == false }}
         run: |
           if ${{ contains(env.COMMIT_MESSAGES, '#skip') == false }}; then
-            echo "No '#skip' found in commit messages"
+            echo "No '#skip' found in commit messages" "TAG_RELEASE" "$TAG_RELEASE_CONDITION"
           else
             echo "'#skip' found in commit messages"
           fi

@@ -19,7 +19,11 @@ jobs:
         run: echo "$COMMITS"
       - name: does contain 'skip'
         env:
-          TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
-          CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
-        run:
-          echo "$TAG_RELEASE_CONDITION" "$CONDITION" "$COMMIT_MESSAGES"
+          TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(env.COMMIT_MESSAGES, '#skip') == false }}
+          CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#skip') == false }}
+        run: |
+          if ${{ contains(env.COMMIT_MESSAGES, '#skip') == false }}; then
+            echo "No '#skip' found in commit messages"
+          else
+            echo "'#skip' found in commit messages"
+          fi

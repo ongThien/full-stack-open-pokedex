@@ -1,5 +1,8 @@
 name: Testing stuff
 
+env:
+  COMMIT_MESSAGES: ${{ join(github.event.commits.*.message, ',') }}
+
 on:
   push:
     branches:
@@ -24,7 +27,7 @@ jobs:
         run: echo "$COMMIT_MESSAGES"
       - name: does contain 'skip'
         env:
-          TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(github.event.commits.*.message, '#skip') == 'false' }}
-          CONDITION: ${{ contains(github.event.commits.*.message, '#skip') == 'false' }}
+          TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
+          CONDITION: ${{ contains(env.COMMIT_MESSAGES, '#skip') == 'false' }}
         run:
           echo "$TAG_RELEASE_CONDITION" "$CONDITION"

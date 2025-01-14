@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize]
 
 env:
-  TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(toJson(github.event.commits.*.message), '#skip') == 'false' }}
+  TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(toJson(github.event.commits), '#skip') == 'false' }}
 
 jobs:
   simple_deployment_pipeline:

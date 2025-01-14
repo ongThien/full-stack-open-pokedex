@@ -22,3 +22,7 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: does contain 'skip'
+        env:
+          TAG_RELEASE_CONDITION: ${{ github.event_name == 'push' && contains(toJson(github.event.commits.*.message), '#skip') == 'false' }}
+        run: echo "$TAG_RELEASE_CONDITION"

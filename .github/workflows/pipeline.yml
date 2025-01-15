@@ -27,6 +27,11 @@ jobs:
         run: npm run eslint
       - name: Build
         run: npm run build
+      - name: Discord Webhook Notify for build
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Tests
         run: npm run test
       - name: E2E Tests
@@ -34,6 +39,11 @@ jobs:
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Discord Webhook Notify for deployment
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
   tag-release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
@@ -45,19 +55,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-  notification:
-    needs: [simple_deployment_pipeline]
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Test Info
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: info
-          details: Build succeeded.
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-      - name: Test Error
-        uses: rjstone/discord-webhook-notify@v1
-        with:
-          severity: error
-          details: Build error.
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}

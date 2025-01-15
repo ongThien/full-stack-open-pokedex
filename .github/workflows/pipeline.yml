@@ -47,6 +47,7 @@ jobs:
           DEFAULT_BUMP: patch
   notification:
     needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
     steps:
       - name: Test Info
         uses: rjstone/discord-webhook-notify@v1

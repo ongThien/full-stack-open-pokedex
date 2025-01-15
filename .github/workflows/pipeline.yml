@@ -53,7 +53,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
-          details: Build succeed.
+          details: Build succeeded.
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Test Error
         uses: rjstone/discord-webhook-notify@v1
